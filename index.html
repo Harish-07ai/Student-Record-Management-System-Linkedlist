@@ -5,97 +5,206 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Record Management</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 20px;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+
+    body {
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px;
+    }
+
+    .container {
+      background: #fff;
+      width: 100%;
+      max-width: 900px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+
     h1 {
       text-align: center;
       color: #333;
+      margin-bottom: 25px;
+      font-size: 2rem;
     }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+    .section-title {
+      font-weight: bold;
+      margin: 15px 0 5px;
+      color: #444;
     }
-    input, button {
-      padding: 10px;
-      margin: 5px 0;
-      width: 100%;
+
+    .form-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .form-group input {
+      flex: 1;
+      padding: 10px 15px;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
     }
-    button {
-      background: #007bff;
-      color: #fff;
+
+    .form-group input:focus {
+      border-color: #66a6ff;
+      outline: none;
+    }
+
+    .btn {
+      padding: 12px;
       border: none;
+      border-radius: 8px;
       cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
     }
-    button:hover {
-      background: #0056b3;
-    }
-    table {
+
+    .btn-add {
+      background: linear-gradient(135deg, #56ab2f, #a8e063);
+      color: #fff;
       width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
+      margin-bottom: 15px;
     }
-    table, th, td {
-      border: 1px solid #ddd;
+
+    .btn-add:hover {
+      opacity: 0.9;
     }
-    th, td {
-      padding: 8px;
+
+    .btn-delete {
+      background: linear-gradient(135deg, #e53935, #e35d5b);
+      color: #fff;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .btn-delete:hover {
+      opacity: 0.9;
+    }
+
+    .btn-update {
+      background: linear-gradient(135deg, #36d1dc, #5b86e5);
+      color: #fff;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .btn-update:hover {
+      opacity: 0.9;
+    }
+
+    /* Cards container */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #f8f9ff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transform: translateY(0);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+
+    .card-header {
+      background: #66a6ff;
+      color: #fff;
+      padding: 10px;
+      font-weight: bold;
       text-align: center;
     }
-    th {
-      background: #007bff;
-      color: white;
+
+    .card-body {
+      padding: 15px;
+      text-align: center;
+    }
+
+    .card-body p {
+      margin: 5px 0;
+      color: #333;
+    }
+
+    @media (max-width: 600px) {
+      .form-group {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Student Record Management</h1>
   <div class="container">
-    <input type="text" id="name" placeholder="Enter Name">
-    <input type="text" id="roll" placeholder="Enter Roll Number">
-    <input type="text" id="grade" placeholder="Enter Grade">
-    <button onclick="addStudent()">Add Student</button>
-    <input type="text" id="deleteRoll" placeholder="Enter Roll to Delete">
-    <button onclick="deleteStudent()">Delete Student</button>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Roll</th>
-          <th>Grade</th>
-        </tr>
-      </thead>
-      <tbody id="studentTable"></tbody>
-    </table>
+    <h1>Student Record Management</h1>
+    
+    <!-- Add Form -->
+    <div class="section-title">Add Student</div>
+    <div class="form-group">
+      <input type="text" id="name" placeholder="Enter Name">
+      <input type="text" id="roll" placeholder="Enter Roll Number">
+      <input type="number" id="marks" placeholder="Enter Marks">
+    </div>
+    <button class="btn btn-add" onclick="addStudent()">Add Student</button>
+
+    <!-- Delete Form -->
+    <div class="section-title">Delete Student</div>
+    <div class="form-group">
+      <input type="text" id="deleteRoll" placeholder="Enter Roll Number to Delete">
+    </div>
+    <button class="btn btn-delete" onclick="deleteStudent()">Delete Student</button>
+
+    <!-- Update Form -->
+    <div class="section-title">Update Student</div>
+    <div class="form-group">
+      <input type="text" id="updateRoll" placeholder="Roll Number to Update">
+      <input type="text" id="updateName" placeholder="New Name">
+      <input type="number" id="updateMarks" placeholder="New Marks">
+    </div>
+    <button class="btn btn-update" onclick="updateStudent()">Update Student</button>
+
+    <!-- Cards -->
+    <div class="cards" id="studentCards"></div>
   </div>
 
   <script>
-    // Linked List Node
+    // === Linked List Node ===
     class Node {
-      constructor(name, roll, grade) {
+      constructor(name, roll, marks) {
         this.name = name;
         this.roll = roll;
-        this.grade = grade;
+        this.marks = marks;
         this.next = null;
       }
     }
 
-    // Linked List Class
+    // === Linked List ===
     class LinkedList {
       constructor() {
         this.head = null;
       }
 
-      add(name, roll, grade) {
-        const newNode = new Node(name, roll, grade);
+      add(name, roll, marks) {
+        const newNode = new Node(name, roll, marks);
         if (this.head === null) {
           this.head = newNode;
         } else {
@@ -122,11 +231,23 @@
         }
       }
 
+      update(roll, newName, newMarks) {
+        let current = this.head;
+        while (current !== null) {
+          if (current.roll === roll) {
+            if (newName) current.name = newName;
+            if (newMarks) current.marks = newMarks;
+            return;
+          }
+          current = current.next;
+        }
+      }
+
       getAll() {
         let arr = [];
         let current = this.head;
         while (current !== null) {
-          arr.push({ name: current.name, roll: current.roll, grade: current.grade });
+          arr.push({ name: current.name, roll: current.roll, marks: current.marks });
           current = current.next;
         }
         return arr;
@@ -136,22 +257,23 @@
     const studentList = new LinkedList();
 
     function addStudent() {
-      const name = document.getElementById('name').value;
-      const roll = document.getElementById('roll').value;
-      const grade = document.getElementById('grade').value;
-      if (name && roll && grade) {
-        studentList.add(name, roll, grade);
+      const name = document.getElementById('name').value.trim();
+      const roll = document.getElementById('roll').value.trim();
+      const marks = document.getElementById('marks').value.trim();
+
+      if (name && roll && marks) {
+        studentList.add(name, roll, marks);
         displayStudents();
         document.getElementById('name').value = '';
         document.getElementById('roll').value = '';
-        document.getElementById('grade').value = '';
+        document.getElementById('marks').value = '';
       } else {
         alert('Please fill all fields');
       }
     }
 
     function deleteStudent() {
-      const roll = document.getElementById('deleteRoll').value;
+      const roll = document.getElementById('deleteRoll').value.trim();
       if (roll) {
         studentList.delete(roll);
         displayStudents();
@@ -161,17 +283,35 @@
       }
     }
 
+    function updateStudent() {
+      const roll = document.getElementById('updateRoll').value.trim();
+      const newName = document.getElementById('updateName').value.trim();
+      const newMarks = document.getElementById('updateMarks').value.trim();
+
+      if (roll) {
+        studentList.update(roll, newName, newMarks);
+        displayStudents();
+        document.getElementById('updateRoll').value = '';
+        document.getElementById('updateName').value = '';
+        document.getElementById('updateMarks').value = '';
+      } else {
+        alert('Please enter Roll Number to update');
+      }
+    }
+
     function displayStudents() {
-      const tableBody = document.getElementById('studentTable');
-      tableBody.innerHTML = '';
+      const cardsContainer = document.getElementById('studentCards');
+      cardsContainer.innerHTML = '';
       const students = studentList.getAll();
       students.forEach(stu => {
-        tableBody.innerHTML += `
-          <tr>
-            <td>${stu.name}</td>
-            <td>${stu.roll}</td>
-            <td>${stu.grade}</td>
-          </tr>
+        cardsContainer.innerHTML += `
+          <div class="card">
+            <div class="card-header">Roll: ${stu.roll}</div>
+            <div class="card-body">
+              <p><strong>Name:</strong> ${stu.name}</p>
+              <p><strong>Marks:</strong> ${stu.marks}</p>
+            </div>
+          </div>
         `;
       });
     }
